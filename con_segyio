@@ -1,0 +1,23 @@
+#procesamiento con segyio
+
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy
+import segyio
+
+from scipy import ndimage as ndi
+from shutil import copyfile
+from skimage import exposure
+from google.colab import drive
+
+drive.mount('/content/drive')
+filename = '/content/drive/MyDrive/samples/3D_gathers_pstm_nmo.sgy'
+
+with segyio.open(filename,'r', ignore_geometry=True) as f:
+  iline = f.ilines
+  xline = f.xlines
+  
+  print("unstructured:", f.unstructured) #True
+  print("iline:", iline) #None
+  print("xline:", xline) #None
+  
