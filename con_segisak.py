@@ -7,9 +7,11 @@ import xarray as xr
 from segysak.segy import segy_header_scan
 from segysak.segy import segy_loader
 from IPython.display import display
+from google.colab import drive
 
-long_data = '/content/drive/MyDrive/samples/3D_gathers_pstm_nmo.sgy'
-V3D_path = pathlib.Path(long_data)
+drive.mount('/content/drive')
+filename = '/content/drive/MyDrive/samples/3D_gathers_pstm_nmo.sgy'
+V3D_path = pathlib.Path(filename)
 
 scan = segy_header_scan(long_data)
 with pd.option_context("display.max_rows", 91):
@@ -28,7 +30,7 @@ V3D = xr.open_dataset(
     dim_byte_fields={"ILINE_3D":189, "CROSSLINE_3D": 193, "ShotPoint":197},
     extra_byte_fields={"CDP_X":181, "CDP_Y":185 },
 )
-V3D #para ver el iline y xline que se utilizam en la grafica
+V3D #esto para ver el iline y xline que se utilizam en la grafica
 #en este caso es ILINE_3D=1290 y CROSSLINE_3D=1150
 
 fig, ax1 = plt.subplots(ncols=1, figsize=(15, 8))
