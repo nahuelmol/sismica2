@@ -24,3 +24,5 @@ Se aplican simplemente:
 * realizar la correción NMO y DMO
 * aplicar filtro f-k
 
+##recursos
+https://data.openei.org/submissions/3794
