@@ -1,4 +1,5 @@
 #procesamiento con segyio
+#sirve para visualizar secciones 2D, registros en linea
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +12,15 @@ from skimage import exposure
 from google.colab import drive
 
 drive.mount('/content/drive')
-filename = '/content/drive/MyDrive/samples/3D_gathers_pstm_nmo.sgy'
+data2D = '/content/drive/MyDrive/samples/Line_301_PSTM_Stack_Enh.segy'
+V2D_path = pathlib.Path(data2D)
+header = segy_header_scan(data2D)
+with pd.option_context("display.max_rows", 91):
+    display(scan2)
+
+#datos que serviran para procesar las trazas
+dt = header.loc["TRACE_SAMPLE_INTERVAL"]["mean"]
+sr = 1000 / dt
 
 with segyio.open(filename,'r', ignore_geometry=True) as f:
   iline = f.ilines
@@ -20,4 +29,17 @@ with segyio.open(filename,'r', ignore_geometry=True) as f:
   print("unstructured:", f.unstructured) #True
   print("iline:", iline) #None
   print("xline:", xline) #None
-  
+
+  traces = f.trace
+  xr_traces = xr.DataArray(traces).transpose("dim_1", "dim_0")
+  xr_traces.plot()
+  plt.gca().invert_yaxis()
+  plt.show()
+
+#viendo las trazas (la primera por ejemplo)
+with segyio.open(V2D_path, ignore_geometry=True) as f:
+    trace = f.trace[0]
+    xr_trace = xr.DataArray(trace)
+    xr_trace.plot()
+    plt.show()
+
